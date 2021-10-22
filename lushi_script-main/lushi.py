@@ -56,9 +56,9 @@ class Images:
     skill_select = 'imgs/skill_select.png'
     battle_ready2 = 'imgs/battle_ready2.png'
     surprise2 = 'imgs/surprise2.png'
+
     surprise = 'imgs/surprise.png'  # 看看哪一个效果好，我也会重新截图
     start_point = 'imgs/start_point.png'
-
     treasure_list = 'imgs/treasure_list.png'
     treasure_replace = 'imgs/treasure_replace.png'
     visitor_list = 'imgs/visitor_list.png'
@@ -67,11 +67,11 @@ class Images:
     final_confirm = 'imgs/final_confirm.png'
     boom = 'imgs/boom.png'
     ice_berg = 'imgs/ice_berg.png'
-    hero_name = 'imgs/Geddon.png'
+    hero_name = 'imgs/LichKing.png'
     box = 'imgs/box.png'
-    check_team = 'imgs/check_team.png'
+    checkteam = 'imgs/checkteam.png'
     confirm2 = 'imgs/confirm2.png'
-    give_up = 'imgs/give_up.png'
+    giveup = 'imgs/giveup.png'
     boss = 'imgs/boss.png'
 
 
@@ -98,6 +98,12 @@ class Agent:
             (807, 641),
             (943, 641)
         ]
+
+        # self.hero_relative_locs = [
+        #     (807, 641),
+        #     (677, 632),
+        #     (943, 641)
+        # ]
 
         self.enemy_mid_location = (850, 285)
 
@@ -141,7 +147,7 @@ class Agent:
         self.start_team_loc = (1190, 797)
         self.start_game_relative_loc = (1250, 732)
         self.start_point = (1114, 956)
-        self.check_team = (1134, 1118)
+        self.checkteam = (1134, 1118)
         self.start_point_relative_loc = (654, 707)
 
         self.options_loc = (1579, 920)
@@ -156,9 +162,17 @@ class Agent:
         # side = None
         battle_count = 0
 
+
         while True:
             time.sleep(.5)  # 修改点 flag
             states, rect = self.check_state()
+
+            if 'box' in states or 'boss' in states:
+                print('great')
+                if battle_count:
+                    pyautogui.click(self.checkteam)
+                continue
+
             pyautogui.moveTo(rect[0] + self.start_game_relative_loc[0], rect[1] + self.start_game_relative_loc[1])
             pyautogui.click()
             # pyautogui.moveTo(rect[0] + self.empty_loc[0], rect[1] + self.empty_loc[1])
@@ -183,14 +197,6 @@ class Agent:
             if 'air_element' in states:
                 pyautogui.click(states['air_element'][0])
                 pyautogui.click(rect[0] + self.start_game_relative_loc[0], rect[1] + self.start_game_relative_loc[1])
-                continue
-
-            print('box_flag1')
-            if 'box' in states or 'boss' in states:
-                print('box_flag2')
-                # check_loc = states['check_team'][0]
-                pyautogui.click(self.check_team)
-                pyautogui.click(self.check_team)
                 continue
 
             if 'team_list' in states:
@@ -220,6 +226,7 @@ class Agent:
 
             if 'battle_ready2' in states:
                 pyautogui.click(states['battle_ready2'][0])
+                battle_count += 1
                 continue
 
             if 'treasure_list' in states or 'treasure_replace' in states:
@@ -300,9 +307,9 @@ class Agent:
                 pyautogui.click(confirm2_loc)
                 continue
 
-            if 'give_up' in states:
-                give_up_loc = states['give_up'][0]
-                pyautogui.click(give_up_loc)
+            if 'giveup' in states:
+                giveup_loc = states['giveup'][0]
+                pyautogui.click(giveup_loc)
                 continue
 
             if 'skill_select' in states or 'not_ready' in states:
@@ -375,8 +382,8 @@ def main():
         #     team_id = "1"
         # if heros_id == "":
         #     heros_id = "1 4 5"
-        skills_id = "1 1 0"
-        targets_id = "-1 -1 0"
+        skills_id = "1 0 0"
+        targets_id = "-1 0 0"
         heros_id = "0 1 2"
         team_id = "0"  # 这里将逻辑写死，不用再调试  修改点 flag
 
